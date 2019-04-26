@@ -5,8 +5,11 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
+
+	"trace"
 )
 
 type templateHandler struct {
@@ -27,6 +30,7 @@ func main() {
 	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
 	flag.Parse() // フラグを解釈
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 	http.Handle("/", &templateHandler{filename: "chat"})
 	http.Handle("/room", r)
 
