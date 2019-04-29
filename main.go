@@ -31,7 +31,12 @@ func main() {
 	r := newRoom()
 	//r.tracer = trace.New(os.Stdout)
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat"}))
+	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.Handle("/room", r)
+
+	// Bootstrapをダウンロードする場合
+	//http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("/assetsへのパス/"))))
+
 
 	// チャットルームを開始します
 	go r.run()
