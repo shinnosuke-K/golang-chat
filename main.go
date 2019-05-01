@@ -34,7 +34,7 @@ func main() {
 	flag.Parse() // フラグを解釈
 
 	// Gomniauthのセットアップ
-	gomniauth.GetSecurityKey("セキュリティキー")
+	gomniauth.SetSecurityKey("1")
 	gomniauth.WithProviders(
 		facebook.New("", "", "http://localhost:8080/auth/callback/facebook"),
 		github.New("", "", "http://localhost:8080/auth/callback/github"),
