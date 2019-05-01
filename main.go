@@ -2,6 +2,10 @@ package main
 
 import (
 	"flag"
+	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/facebook"
+	"github.com/stretchr/gomniauth/providers/github"
+	"github.com/stretchr/gomniauth/providers/google"
 	"html/template"
 	"log"
 	"net/http"
@@ -28,6 +32,15 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	var host = flag.String("host", ":8080", "アプリケーションのアドレス")
 	flag.Parse() // フラグを解釈
+
+	// Gomniauthのセットアップ
+	gomniauth.GetSecurityKey("セキュリティキー")
+	gomniauth.WithProviders(
+		facebook.New("", "", "http://localhost:8080/auth/callback/facebook"),
+		github.New("", "", "http://localhost:8080/auth/callback/github"),
+		google.New("", "", "http://localhost:8080/auth/callback/google"),
+	)
+
 	r := newRoom()
 	//r.tracer = trace.New(os.Stdout)
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat"}))
@@ -37,7 +50,6 @@ func main() {
 
 	// Bootstrapをダウンロードする場合
 	//http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("/assetsへのパス/"))))
-
 
 	// チャットルームを開始します
 	go r.run()
