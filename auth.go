@@ -33,7 +33,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	segs := strings.Split(r.URL.Path, "/")
 	action := segs[2]
 	provider := segs[3]
-	fmt.Println(r.URL.Path)
 	switch action {
 	case "login":
 		provider, err := gomniauth.Provider(provider)

@@ -44,8 +44,8 @@ func main() {
 	gomniauth.SetSecurityKey("1")
 	gomniauth.WithProviders(
 		facebook.New("", "", "http://localhost:8080/auth/callback/facebook"),
-		github.New("", "", "http://localhost:8080/auth/callback/github"),
-		google.New("", "", "http://localhost:8080/auth/callback/google"),
+		github.New("154bb2b03a3468b2ec9a", "d9ffce8d6e7160ceeb451faa0b27a68e6148a743", "http://localhost:8080/auth/callback/github"),
+		google.New("1024293657837-b6pphv1udmifvn6qchr96vebg72vc9ts.apps.googleusercontent.com", "PrSTJ-FCU8-a5GEaYQcU3qwf", "http://localhost:8080/auth/callback/google"),
 	)
 
 	r := newRoom()
