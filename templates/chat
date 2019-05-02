@@ -26,7 +26,7 @@
                         alert("エラー: WebSocket接続が行われていません。");
                         return false;
                     }
-                    socket.send(JSON.stringify({"Message": msgBox.val()}));
+                    socket.send(JSON.stringify({"Message": msgBox.val(), "When": new Date()}));
                     msgBox.val("");
                     return false;
                 });
@@ -41,6 +41,7 @@
                         var msg = JSON.parse(e.data)
                         messages.append(
                             $("<li>").append(
+                                $("<strong>").text(msg.When + " : "),
                                 $("<strong>").text(msg.Name + " : "),
                                 $("<span>").text(msg.Message)
                             )
