@@ -66,6 +66,9 @@ func main() {
 	})
 	http.Handle("/upload", &templateHandler{filename: "upload"})
 	http.HandleFunc("/uploader", uploaderHandler)
+	http.Handle("/avatars/",
+		http.StripPrefix("/avatars/",
+			http.FileServer(http.Dir("./avatars"))))
 
 	// Bootstrapをダウンロードする場合
 	//http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("/assetsへのパス/"))))
