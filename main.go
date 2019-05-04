@@ -65,6 +65,7 @@ func main() {
 		w.WriteHeader(http.StatusTemporaryRedirect)
 	})
 	http.Handle("/upload", &templateHandler{filename: "upload"})
+	http.HandleFunc("/uploader", uploaderHandler)
 
 	// Bootstrapをダウンロードする場合
 	//http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("/assetsへのパス/"))))
