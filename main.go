@@ -16,7 +16,11 @@ import (
 	//"trace"
 )
 
-var avatars Avatar = UserFileSystemAvatar
+var avatars Avatar = TryAvatars{
+	UseFileSystemAvatar,
+	UseAuthAvatar,
+	UseGravatar,
+}
 
 type templateHandler struct {
 	once     sync.Once
@@ -46,16 +50,15 @@ func main() {
 	gomniauth.SetSecurityKey("1")
 	gomniauth.WithProviders(
 		facebook.New("", "", "http://localhost:8080/auth/callback/facebook"),
-		github.New("154bb2b03a3468b2ec9a", "d9ffce8d6e7160ceeb451faa0b27a68e6148a743", "http://localhost:8080/auth/callback/github"),
-		google.New("1024293657837-b6pphv1udmifvn6qchr96vebg72vc9ts.apps.googleusercontent.com", "PrSTJ-FCU8-a5GEaYQcU3qwf", "http://localhost:8080/auth/callback/google"),
+		github.New("", "", "http://localhost:8080/auth/callback/github"),
+		google.New("", "", "http://localhost:8080/auth/callback/google"),
 	)
 
-	r := newRoom(UserFileSystemAvatar)
+	r := newRoom()
 	//r.tracer = trace.New(os.Stdout)
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.HandleFunc("/auth/", loginHandler)
-	http.Handle("/room", r)
 	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, &http.Cookie{
 			Name:   "auth",
@@ -75,6 +78,7 @@ func main() {
 	// Bootstrapをダウンロードする場合
 	//http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("/assetsへのパス/"))))
 
+	http.Handle("/room", r)
 	// チャットルームを開始します
 	go r.run()
 

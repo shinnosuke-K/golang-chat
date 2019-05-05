@@ -3,25 +3,26 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-	"github.com/stretchr/gomniauth"
-	gomniauthcommon "github.com/stretchr/gomniauth/common"
-	"github.com/stretchr/objx"
 	"io"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/stretchr/gomniauth"
+	gomniauthcommon "github.com/stretchr/gomniauth/common"
+	"github.com/stretchr/objx"
 )
 
 type ChatUser interface {
 	UniqueID() string
-	AvararURL() string
+	AvatarURL() string
 }
 type chatUser struct {
 	gomniauthcommon.User
 	uniqueID string
 }
 
-func (u chatUser) Unique() string {
+func (u chatUser) UniqueID() string {
 	return u.uniqueID
 }
 
@@ -41,6 +42,10 @@ func (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// 成功。ラップされたハンドラを呼び出します
 		h.next.ServeHTTP(w, r)
 	}
+}
+
+func MustAuth(handler http.Handler) http.Handler {
+	return &authHandler{next: handler}
 }
 
 // loginHandlerはサードパーティーへのログインの処理を受け付けます
@@ -82,7 +87,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		//userID := fmt.Sprintf("%x", m.Sum(nil))
 		chatUser := &chatUser{User: user}
 		m := md5.New()
-		io.WriteString(m, strings.ToLower(user.Name()))
+		io.WriteString(m, strings.ToLower(user.Email()))
 		chatUser.uniqueID = fmt.Sprintf("%x", m.Sum(nil))
 		avatarURL, err := avatars.GetAvatarURL(chatUser)
 		if err != nil {
@@ -106,6 +111,3 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func MustAuth(handler http.Handler) http.Handler {
-	return &authHandler{next: handler}
-}

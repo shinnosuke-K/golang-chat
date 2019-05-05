@@ -1,11 +1,12 @@
 package main
 
 import (
-	gomniauthtest "github.com/stretchr/gomniauth/test"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
+
+	gomniauthtest "github.com/stretchr/gomniauth/test"
 )
 
 func TestAuthAvatar(t *testing.T) {
@@ -25,7 +26,7 @@ func TestAuthAvatar(t *testing.T) {
 	testUser = &gomniauthtest.TestUser{}
 	testChatUser.User = testUser
 	testUser.On("AvatarURL").Return(testUrl, nil)
-	url, err := authAvatar.GetAvatarURL(testChatUser)
+	url, err = authAvatar.GetAvatarURL(testChatUser)
 	//client.userData = map[string]interface{}{"avatar_url": testUrl}
 	//url, err = authAvatar.GetAvatarURL(client)
 	if err != nil {
@@ -41,7 +42,7 @@ func TestGravatarAvatar(t *testing.T) {
 	var gravatarAvatar GravatarAvatar
 	//client := new(client)
 	//client.userData = map[string]interface{}{
-	//	"userid": "1d448a41ad5e950d448daf8c2ca65ffa",
+	//	"userid": "",
 	//}
 	//url, err := gravatarAvatar.GetAvatarURL(client)
 	user := &chatUser{uniqueID: "abc"}
