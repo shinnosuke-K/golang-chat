@@ -32,7 +32,7 @@ func TestGravatarAvatar(t *testing.T) {
 	var gravatarAvatar GravatarAvatar
 	client := new(client)
 	client.userData = map[string]interface{}{
-		"userid": "",
+		"userid": "1d448a41ad5e950d448daf8c2ca65ffa",
 	}
 	url, err := gravatarAvatar.GetAvatarURL(client)
 	if err != nil {
@@ -54,7 +54,7 @@ func TestFileSystemAvatar(t *testing.T) {
 	client.userData = map[string]interface{}{"userid": "abc"}
 	url, err := fileSystemAvatar.GetAvatarURL(client)
 	if err != nil {
-		t.Error("FileSystemAvata.GetAvatarURLはエラーを返すべきではありません")
+		t.Error("FileSystemAvatar.GetAvatarURLはエラーを返すべきではありません")
 	}
 	if url != "/avatars/abc.jpg" {
 		t.Errorf("FileSystemAvatar.GetAvatarURLが%sという誤った値を返しました", url)
