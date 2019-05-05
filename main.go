@@ -16,6 +16,8 @@ import (
 	//"trace"
 )
 
+var avatars Avatar = UserFileSystemAvatar
+
 type templateHandler struct {
 	once     sync.Once
 	filename string
